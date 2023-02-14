@@ -1,16 +1,17 @@
 package webserver;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RequestHandler implements Runnable{
     Socket connection;
     private static final Logger log = Logger.getLogger(RequestHandler.class.getName());
+    private static final String webUrl = "./webapp";
 
     public RequestHandler(Socket connection) {
         this.connection = connection;
@@ -19,13 +20,21 @@ public class RequestHandler implements Runnable{
     @Override
     public void run() {
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()){
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
             DataOutputStream dos = new DataOutputStream(out);
-            byte[] data = "My Web Server".getBytes();
+            byte[] data = Files.readAllBytes(Paths.get(getUrl(br)));
+            log.log(Level.FINE, Arrays.toString(data));
             response200Header(dos,data.length);
             responseBody(dos,data);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getUrl(BufferedReader br) {
+//        List<String> requestLines = br.lines().collect(Collectors.toList());
+//        return webUrl+HttpRequestUtils.parseHeader(requestLines).getUrl();
+        return "";
     }
 
     private void response200Header(DataOutputStream dos, int lengthOfBody) {

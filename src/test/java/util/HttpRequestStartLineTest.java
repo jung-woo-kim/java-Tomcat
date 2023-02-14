@@ -1,6 +1,7 @@
 package util;
 
 import org.junit.jupiter.api.Test;
+import util.request.HttpRequestStartLine;
 
 import static org.junit.jupiter.api.Assertions.*;
 

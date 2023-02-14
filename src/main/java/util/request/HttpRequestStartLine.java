@@ -26,7 +26,7 @@ public class HttpRequestStartLine {
 
         validateStartLineLength(startLineAttributes);
 
-        HttpMethod httpMethod = HttpMethod.getMethod(startLineAttributes.get(0));
+        HttpMethod httpMethod = HttpMethod.getHttpMethod(startLineAttributes.get(0));
         String path = startLineAttributes.get(1);
         String version = startLineAttributes.get(2);
 

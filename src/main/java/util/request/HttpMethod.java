@@ -1,4 +1,4 @@
-package util;
+package util.request;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -11,7 +11,7 @@ public enum HttpMethod {
         this.method = method;
     }
 
-    public static HttpMethod getMethod(String requestMethod) {
+    public static HttpMethod getHttpMethod(String requestMethod) {
         Optional<HttpMethod> method = Arrays.stream(HttpMethod.values()).filter(httpMethod -> httpMethod.method.equals(requestMethod)).findFirst();
 
         if (method.isPresent()) {
