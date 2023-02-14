@@ -27,3 +27,12 @@ RequestHandler
 - OutputStream을 DataDouputStream으로 감싸 사용한다.
 - Header 작성 메서드
 - Body 작성 메서드
+
+### Util
+
+HttpRequest
+- Http 요청을 클래스의 각 요소에 파싱하는 역할을 한다.
+- 이를 통해 요청을 분석할 수 있다.
+
+HttpResponse
+- Http 응답을 작성할 수 있다.
