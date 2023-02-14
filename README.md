@@ -1,5 +1,8 @@
 # HTTP-web-server
 
+
+## Task 1 : 가장 row하게 socket 통신으로만 웹 서버를 구현한다.
+
 ### DB
 우선 인메모리 형식으로 구현한다.
 
