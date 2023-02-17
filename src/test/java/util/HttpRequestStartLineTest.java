@@ -17,6 +17,16 @@ class HttpRequestStartLineTest {
     }
 
     @Test
+    void 쿼리_정상_동작() {
+        HttpRequestStartLine startLine = HttpRequestStartLine.from("GET ./index.html?name=query HTTP1.1");
+
+        assertEquals("GET",startLine.getHttpMethod().getMethod());
+        assertEquals("./index.html",startLine.getPath());
+        assertEquals("HTTP1.1",startLine.getVersion());
+        assertEquals("query",startLine.getQuery().get("name"));
+    }
+
+    @Test
     void 지원하지_않는_메소드() {
         assertThrows(IllegalArgumentException.class,()->HttpRequestStartLine.from("PATCH ./index.html HTTP1.1"));
     }
