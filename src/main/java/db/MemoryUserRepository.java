@@ -7,6 +7,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MemoryUserRepository {
     private ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
+    private static MemoryUserRepository memoryUserRepository;
+
+    private MemoryUserRepository() {
+    }
+
+    public static MemoryUserRepository getInstance() {
+        if (memoryUserRepository == null) {
+            memoryUserRepository = new MemoryUserRepository();
+            return memoryUserRepository;
+        }
+        return memoryUserRepository;
+    }
 
     public void addUser(User user) {
         users.put(user.getUserId(), user);
