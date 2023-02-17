@@ -12,6 +12,9 @@ public class HttpRequest {
     private final HttpHeaders headers;
     private final String body;
 
+    private static final String webUrl = "./webapp";
+    private static final String DEFAULT_URL = "/index.html";
+
 
     private HttpRequest(final HttpRequestStartLine startLine, final HttpHeaders headers, final String body) {
         this.startLine = startLine;
@@ -60,6 +63,9 @@ public class HttpRequest {
     }
 
     public String getUrl() {
-        return startLine.getPath();
+        if (startLine.getPath().equals("/")) {
+            return webUrl + DEFAULT_URL;
+        }
+        return webUrl + startLine.getPath();
     }
 }
