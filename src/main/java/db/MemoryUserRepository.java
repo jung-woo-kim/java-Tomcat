@@ -5,7 +5,7 @@ import model.User;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MemoryRepository {
+public class MemoryUserRepository {
     private ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
 
     public void addUser(User user) {
