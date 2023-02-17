@@ -1,5 +1,7 @@
 package webserver;
 
+import util.request.HttpRequest;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -19,15 +21,18 @@ public class RequestHandler implements Runnable{
 
     @Override
     public void run() {
+        log.log(Level.INFO, "New Client Connect! Connected IP : " + connection.getInetAddress() + ", Port : " + connection.getPort());
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()){
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             DataOutputStream dos = new DataOutputStream(out);
-            byte[] data = Files.readAllBytes(Paths.get(getUrl(br)));
-            log.log(Level.FINE, Arrays.toString(data));
+
+            HttpRequest httpRequest = HttpRequest.from(br);
+
+            byte[] data = Files.readAllBytes(Paths.get(webUrl + httpRequest.getStartLine().getPath()));
             response200Header(dos,data.length);
             responseBody(dos,data);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.log(Level.SEVERE,e.getMessage());
         }
     }
 
