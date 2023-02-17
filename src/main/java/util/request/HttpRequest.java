@@ -1,5 +1,7 @@
 package util.request;
 
+import webserver.RequestURL;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -64,8 +66,8 @@ public class HttpRequest {
 
     public String getUrl() {
         if (startLine.getPath().equals("/")) {
-            return webUrl + DEFAULT_URL;
+            return RequestURL.INDEX.getUrl();
         }
-        return webUrl + startLine.getPath();
+        return startLine.getPath();
     }
 }

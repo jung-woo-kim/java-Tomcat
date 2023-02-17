@@ -27,9 +27,11 @@ public class RequestHandler implements Runnable{
             DataOutputStream dos = new DataOutputStream(out);
 
             HttpRequest httpRequest = HttpRequest.from(br);
-            System.out.println(httpRequest.getUrl());
-            byte[] data = Files.readAllBytes(Paths.get(httpRequest.getUrl()));
-            log.log(Level.INFO,httpRequest.getBody());
+            RequestMapper requestMapper = new RequestMapper(httpRequest);
+
+            String url = requestMapper.proceed();
+            byte[] data = Files.readAllBytes(Paths.get(RequestURL.DEFAULT.getUrl() + url));
+
             response200Header(dos,data.length);
             responseBody(dos,data);
         } catch (IOException e) {
