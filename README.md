@@ -28,6 +28,10 @@ RequestHandler
 - Header 작성 메서드
 - Body 작성 메서드
 
+RequestMapper
+- 요청을 그 요청을 수행할 도메인과 연결해주는 역할을 한다.
+- 즉, 요청을 해석하여 메소드를 부른다.
+
 ### Util
 
 HttpRequest
@@ -36,3 +40,6 @@ HttpRequest
 
 HttpResponse
 - Http 응답을 작성할 수 있다.
+
+### signup
+- 회원가입 로직을 담당
