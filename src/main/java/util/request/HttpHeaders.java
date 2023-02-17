@@ -1,18 +1,19 @@
 package util.request;
 
 
+import util.HttpHeader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class HttpHeaders {
-    private Map<String, String> headers;
+    private Map<HttpHeader, String> headers;
 
     private static final String DISCRIMINATOR = ":";
 
-    private HttpHeaders(final Map<String, String> headers) {
+    public HttpHeaders(final Map<HttpHeader, String> headers) {
         this.headers = headers;
     }
 
@@ -20,8 +21,8 @@ public class HttpHeaders {
         return new HttpHeaders(readAllHeaders(bufferedReader));
     }
 
-    private static Map<String, String> readAllHeaders(final BufferedReader bufferedReader) throws IOException {
-        final Map<String, String> headers = new LinkedHashMap<>();
+    private static Map<HttpHeader, String> readAllHeaders(final BufferedReader bufferedReader) throws IOException {
+        final Map<HttpHeader, String> headers = new LinkedHashMap<>();
 
         while (true) {
             final String line = bufferedReader.readLine();
@@ -30,8 +31,11 @@ public class HttpHeaders {
             }
             final List<String> header = parseHeader(line);
             final String headerType = header.get(0).trim();
+            HttpHeader headerKey = HttpHeader.getHeaderInstance(headerType);
             final String headerValue = header.get(1).trim();
-            headers.put(headerType, headerValue);
+            if (headerKey != null) {
+                headers.put(headerKey, headerValue);
+            }
         }
 
         return headers;
@@ -49,19 +53,19 @@ public class HttpHeaders {
         }
     }
 
-    public boolean contains(final String httpHeaderType) {
+    public boolean contains(final HttpHeader httpHeaderType) {
         return headers.containsKey(httpHeaderType);
     }
 
-    public String get(final String httpHeaderType) {
+    public String get(final HttpHeader httpHeaderType) {
         return headers.get(httpHeaderType);
     }
 
-    public Set<String> keySet() {
+    public Set<HttpHeader> keySet() {
         return headers.keySet();
     }
 
-    public void put(String httpHeaderType, final String httpHeader) {
+    public void put(HttpHeader httpHeaderType, final String httpHeader) {
         headers.put(httpHeaderType, httpHeader);
     }
 

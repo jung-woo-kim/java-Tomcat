@@ -5,11 +5,11 @@ import webserver.RequestURL;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import static util.HttpHeader.CONTENT_LENGTH;
 import static util.IOUtils.readData;
 
 public class HttpRequest {
 
-    private static final String CONTENT_LENGTH = "Content-Length";
     private final HttpRequestStartLine startLine;
     private final HttpHeaders headers;
     private final String body;
