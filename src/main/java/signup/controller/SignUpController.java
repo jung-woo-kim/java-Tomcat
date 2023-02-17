@@ -26,6 +26,6 @@ public class SignUpController {
     }
 
     private SignUpDTO queryToDTO(Map<String ,String> query) {
-        return new SignUpDTO(query.get(UserQueryKey.ID.getKey()), query.get(UserQueryKey.PASSWORD.getKey()), query.get(UserQueryKey.NAME.getKey()));
+        return new SignUpDTO(query.get(UserQueryKey.ID.getKey()), query.get(UserQueryKey.PASSWORD.getKey()), query.get(UserQueryKey.NAME.getKey()), query.get(UserQueryKey.EMAIL.getKey()));
     }
 }

@@ -1,7 +1,7 @@
 package signup.constants;
 
 public enum UserQueryKey {
-    ID("userId"), PASSWORD("password"), NAME("name");
+    ID("userId"), PASSWORD("password"), NAME("name"), EMAIL("email");
 
     private final String key;
 
