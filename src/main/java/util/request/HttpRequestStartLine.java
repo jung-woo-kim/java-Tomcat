@@ -2,18 +2,22 @@ package util.request;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class HttpRequestStartLine {
 
     private static final int START_LINE_MIN_LENGTH = 3;
     private static final String DISCRIMINATOR = " ";
+    private static final String PARAM_DISCRIMINATOR = "\\?";
     private final HttpMethod httpMethod;
     private final String path;
+    private final Map<String, String> query;
     private final String version;
 
-    public HttpRequestStartLine(HttpMethod httpMethod, String path, String version) {
+    public HttpRequestStartLine(HttpMethod httpMethod, String path, Map<String, String> query, String version) {
         this.httpMethod = httpMethod;
         this.path = path;
+        this.query = query;
         this.version = version;
     }
 
@@ -27,10 +31,16 @@ public class HttpRequestStartLine {
         validateStartLineLength(startLineAttributes);
 
         HttpMethod httpMethod = HttpMethod.getHttpMethod(startLineAttributes.get(0));
-        String path = startLineAttributes.get(1);
+        String[] parsePaths = parsePath(startLineAttributes.get(1));
+        String path = parsePaths[0];
+        Map<String, String> parseQuery = HttpRequestUtils.parseQuery(parsePaths[1]);
         String version = startLineAttributes.get(2);
 
-        return new HttpRequestStartLine(httpMethod, path, version);
+        return new HttpRequestStartLine(httpMethod, path, parseQuery, version);
+    }
+
+    private static String[] parsePath(String path) {
+        return path.split(PARAM_DISCRIMINATOR);
     }
 
     private static void validateStartLineLength(final List<String> startLineInfos) {
@@ -49,5 +59,9 @@ public class HttpRequestStartLine {
 
     public String getVersion() {
         return version;
+    }
+
+    public Map<String, String> getQuery() {
+        return query;
     }
 }
