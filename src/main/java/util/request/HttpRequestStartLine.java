@@ -1,6 +1,7 @@
 package util.request;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,11 @@ public class HttpRequestStartLine {
         HttpMethod httpMethod = HttpMethod.getHttpMethod(startLineAttributes.get(0));
         String[] parsePaths = parsePath(startLineAttributes.get(1));
         String path = parsePaths[0];
-        Map<String, String> parseQuery = HttpRequestUtils.parseQuery(parsePaths[1]);
+
+        Map<String, String> parseQuery = new HashMap<>();
+        if (parsePaths.length > 1) {
+            parseQuery  = HttpRequestUtils.parseQuery(parsePaths[1]);
+        }
         String version = startLineAttributes.get(2);
 
         return new HttpRequestStartLine(httpMethod, path, parseQuery, version);
