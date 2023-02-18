@@ -3,14 +3,17 @@ package util.response;
 import util.HttpHeader;
 import util.request.HttpHeaders;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class HttpResponse {
     private HttpStatus httpStatus = HttpStatus.OK;
     private final String httpVersion = "HTTP/1.1";
     private String statusCode = "200";
     private HttpHeaders httpHeaders;
-    private String body;
+    private byte[] body;
 
     public HttpResponse() {
         httpHeaders = new HttpHeaders(new HashMap<>());
@@ -33,13 +36,13 @@ public class HttpResponse {
         this.httpHeaders = httpHeaders;
     }
 
-    public void setBody(String body) {
+    public void setBody(byte[] body) {
         this.body = body;
     }
 
-    @Override
-    public String toString() {
-
-        return httpHeaders.toString() + body;
+    public void write(DataOutputStream dos) throws IOException {
+        dos.writeBytes(httpVersion +" "+statusCode+" "+httpStatus.getStatus()+"\r\n");
+        dos.writeBytes(httpHeaders.toString());
+        dos.write(body);
     }
 }
