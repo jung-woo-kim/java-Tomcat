@@ -54,10 +54,22 @@ public class RequestMapper {
             listController.list(request, httpResponse);
         }
 
+        if (request.getUrl().contains("css")) {
+            httpResponse.put(HttpHeader.CONTENT_TYPE,"text/css");
+            try {
+                byte[] body = Files.readAllBytes(Paths.get(RequestURL.ROOT.getUrl() + request.getUrl()));
+                httpResponse.put(HttpHeader.CONTENT_LENGTH, String.valueOf(body.length));
+                httpResponse.setBody(body);
+            } catch (IOException e) {
+                // 파일이 존재하지 않을때
+                throw new RuntimeException(e);
+            }
+        }
+
         if (request.getUrl().contains("html")) {
             try {
                 byte[] body = Files.readAllBytes(Paths.get(RequestURL.ROOT.getUrl() + request.getUrl()));
-                httpResponse.put(HttpHeader.CONTENT_TYPE, String.valueOf(body.length));
+                httpResponse.put(HttpHeader.CONTENT_LENGTH, String.valueOf(body.length));
                 httpResponse.setBody(body);
             } catch (IOException e) {
                 // 파일이 존재하지 않을때
