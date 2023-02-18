@@ -21,6 +21,7 @@ public class HttpResponse {
 
     public HttpResponse(OutputStream outputStream) {
         this.os = outputStream;
+        this.body = new byte[0];
         httpHeaders = new HttpHeaders(new HashMap<>());
         httpHeaders.put(HttpHeader.CONTENT_TYPE, "text/html;charset=utf-8");
     }
@@ -62,6 +63,13 @@ public class HttpResponse {
             return;
         }
         put(HttpHeader.CONTENT_TYPE,"text/css");
+        write();
+    }
+
+    public void redirect(String path) throws IOException {
+        setHttpStatus(HttpStatus.REDIRECT);
+        setStatusCode("302");
+        put(HttpHeader.LOCATION, path);
         write();
     }
 
