@@ -1,5 +1,6 @@
 package webserver;
 
+import list.ListController;
 import login.controller.LogInController;
 import signup.controller.SignUpController;
 import util.HttpHeader;
@@ -15,6 +16,7 @@ public class RequestMapper {
     private final HttpRequest request;
     private SignUpController signUpController;
     private LogInController logInController;
+    private ListController listController;
     private HttpResponse httpResponse;
 
     public RequestMapper(HttpRequest request, HttpResponse httpResponse) {
@@ -47,6 +49,10 @@ public class RequestMapper {
             signUpController.signUp(request, httpResponse);
             return;
         }
+        if (request.getUrl().equals(RequestURL.USER_LIST.getUrl())) {
+            listController = new ListController();
+            listController.list(request, httpResponse);
+        }
 
         if (request.getUrl().contains("html")) {
             try {
@@ -57,7 +63,6 @@ public class RequestMapper {
                 // 파일이 존재하지 않을때
                 throw new RuntimeException(e);
             }
-            return;
         }
 
     }
@@ -69,7 +74,7 @@ public class RequestMapper {
 
         }
 
-        if (request.getUrl().startsWith(RequestURL.LOGIN.getUrl())) {
+        if (request.getUrl().startsWith(RequestURL.LOGIN_POST.getUrl())) {
             logInController = new LogInController();
             logInController.login(request, httpResponse);
         }

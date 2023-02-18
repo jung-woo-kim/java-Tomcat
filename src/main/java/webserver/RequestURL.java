@@ -1,7 +1,7 @@
 package webserver;
 
 public enum RequestURL {
-    LOGIN("/user/login"),LOGIN_FAILED("/user/login_failed.html"),SIGNUP("/user/create"), ROOT("./webapp"),INDEX("/index.html");
+    USER_LIST_HTML("/user/list.html"),USER_LIST("/user/list"),LOGIN("/user/login.html"),LOGIN_POST("/user/login"),LOGIN_FAILED("/user/login_failed.html"),SIGNUP("/user/create"), ROOT("./webapp"),INDEX("/index.html");
 
     private String url;
 
