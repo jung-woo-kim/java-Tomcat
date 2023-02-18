@@ -24,11 +24,11 @@ public class RequestHandler implements Runnable{
             DataOutputStream dos = new DataOutputStream(out);
 
             HttpRequest httpRequest = HttpRequest.from(br);
-            HttpResponse httpResponse = new HttpResponse();
+            HttpResponse httpResponse = new HttpResponse(dos);
             RequestMapper requestMapper = new RequestMapper(httpRequest,httpResponse);
 
             requestMapper.proceed();
-            httpResponse.write(dos);
+
 
         } catch (IOException e) {
             log.log(Level.SEVERE,e.getMessage());
