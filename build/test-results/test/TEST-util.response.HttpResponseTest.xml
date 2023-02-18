@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="util.response.HttpResponseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-18T18:29:00" hostname="gimjeong-uui-MacBookAir.local" time="0.009">
+<testsuite name="util.response.HttpResponseTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-02-18T18:32:13" hostname="gimjeong-uui-MacBookAir.local" time="0.009">
   <properties/>
-  <testcase name="responseForward()" classname="util.response.HttpResponseTest" time="0.009"/>
+  <testcase name="responseForward()" classname="util.response.HttpResponseTest" time="0.008"/>
+  <testcase name="responseForwardCss()" classname="util.response.HttpResponseTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

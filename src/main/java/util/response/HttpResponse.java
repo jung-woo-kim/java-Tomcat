@@ -62,6 +62,7 @@ public class HttpResponse {
             return;
         }
         put(HttpHeader.CONTENT_TYPE,"text/css");
+        write();
     }
 
 
