@@ -1,13 +1,10 @@
 package webserver;
 
 import util.request.HttpRequest;
+import util.response.HttpResponse;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Deque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,36 +24,15 @@ public class RequestHandler implements Runnable{
             DataOutputStream dos = new DataOutputStream(out);
 
             HttpRequest httpRequest = HttpRequest.from(br);
-            RequestMapper requestMapper = new RequestMapper(httpRequest);
+            HttpResponse httpResponse = new HttpResponse();
+            RequestMapper requestMapper = new RequestMapper(httpRequest,httpResponse);
 
-            String url = requestMapper.proceed();
-            byte[] data = Files.readAllBytes(Paths.get(RequestURL.DEFAULT.getUrl() + url));
+            requestMapper.proceed();
+            httpResponse.write(dos);
 
-            response200Header(dos,data.length);
-            responseBody(dos,data);
         } catch (IOException e) {
             log.log(Level.SEVERE,e.getMessage());
         }
     }
 
-    private void response200Header(DataOutputStream dos, int lengthOfBody) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBody + "\r\n");
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.log(Level.SEVERE,e.getMessage());
-        }
-    }
-
-    private void responseBody(DataOutputStream dos, byte[] body) {
-        try {
-            dos.write(body);
-            dos.flush();
-            dos.close();
-        } catch (IOException e) {
-            log.log(Level.SEVERE,e.getMessage());
-        }
-    }
 }
