@@ -3,10 +3,11 @@ package db;
 import model.User;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MemoryUserRepository {
-    private ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
+    private Map<String, User> users = new HashMap<>();
     private static MemoryUserRepository memoryUserRepository;
 
     private MemoryUserRepository() {
