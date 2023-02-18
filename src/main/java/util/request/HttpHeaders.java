@@ -72,7 +72,7 @@ public class HttpHeaders {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        headers.forEach((key,value) -> sb.append(key.getHeader()).append(" :").append(value).append("\r\n"));
+        headers.forEach((key,value) -> sb.append(key.getHeader()).append(": ").append(value).append("\r\n"));
 
         return sb.append("\r\n").toString();
     }
