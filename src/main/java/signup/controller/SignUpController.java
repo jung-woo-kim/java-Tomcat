@@ -2,7 +2,7 @@ package signup.controller;
 
 import signup.constants.UserQueryKey;
 import signup.dto.SignUpDTO;
-import signup.service.SignUpService;
+import service.UserService;
 import util.HttpHeader;
 import util.request.HttpRequest;
 import util.response.HttpResponse;
@@ -11,12 +11,13 @@ import webserver.RequestURL;
 
 import java.util.Map;
 
-public class SignUpController {
-    SignUpService signUpService = SignUpService.getInstance();
-    public void signUp(HttpRequest httpRequest, HttpResponse httpResponse) {
+import static util.request.HttpRequestUtils.parseQuery;
 
-        SignUpDTO signUpDTO = queryToDTO(httpRequest.getStartLine().getQuery());
-        signUpService.signUP(signUpDTO);
+public class SignUpController {
+    UserService userService = UserService.getInstance();
+    public void signUp(HttpRequest httpRequest, HttpResponse httpResponse) {
+        SignUpDTO signUpDTO = queryToDTO(parseQuery(httpRequest.getBody()));
+        userService.signUP(signUpDTO);
 
         httpResponse.setHttpStatus(HttpStatus.REDIRECT);
         httpResponse.setStatusCode("302");

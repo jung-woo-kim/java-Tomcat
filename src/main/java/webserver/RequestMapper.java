@@ -1,7 +1,7 @@
 package webserver;
 
+import login.controller.LogInController;
 import signup.controller.SignUpController;
-import signup.service.SignUpService;
 import util.HttpHeader;
 import util.request.HttpMethod;
 import util.request.HttpRequest;
@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 public class RequestMapper {
     private final HttpRequest request;
     private SignUpController signUpController;
+    private LogInController logInController;
     private HttpResponse httpResponse;
 
     public RequestMapper(HttpRequest request, HttpResponse httpResponse) {
@@ -39,10 +40,12 @@ public class RequestMapper {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            return;
         }
         if (request.getUrl().startsWith(RequestURL.SIGNUP.getUrl())) {
             signUpController = new SignUpController();
             signUpController.signUp(request, httpResponse);
+            return;
         }
 
         if (request.getUrl().contains("html")) {
@@ -54,15 +57,21 @@ public class RequestMapper {
                 // 파일이 존재하지 않을때
                 throw new RuntimeException(e);
             }
+            return;
         }
 
     }
 
-    private String doPost() {
+    private void doPost() {
         if (request.getUrl().startsWith(RequestURL.SIGNUP.getUrl())) {
             signUpController = new SignUpController();
             signUpController.signUp(request, httpResponse);
+
         }
-        return RequestURL.INDEX.getUrl();
+
+        if (request.getUrl().startsWith(RequestURL.LOGIN.getUrl())) {
+            logInController = new LogInController();
+            logInController.login(request, httpResponse);
+        }
     }
 }

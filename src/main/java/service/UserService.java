@@ -1,6 +1,8 @@
 package service;
 
 import db.MemoryUserRepository;
+import login.dto.LogInDTO;
+import model.User;
 import signup.dto.SignUpDTO;
 
 public class UserService {
@@ -20,5 +22,14 @@ public class UserService {
 
     public void signUP(SignUpDTO signUpDTO) {
         memoryUserRepository.addUser(signUpDTO.toUser());
+    }
+
+    public boolean isUser(LogInDTO logInDTO) {
+        User user = memoryUserRepository.findUserById(logInDTO.getUserId());
+        if (user == null) {
+            return false;
+        }
+
+        return user.getPassword().equals(logInDTO.getPassword());
     }
 }
