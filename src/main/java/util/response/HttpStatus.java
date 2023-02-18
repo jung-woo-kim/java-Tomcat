@@ -1,7 +1,7 @@
 package util.response;
 
 public enum HttpStatus {
-    OK("OK"), REDIRECT("Redirection");
+    OK("OK"), REDIRECT("Found");
 
     private final String status;
 
