@@ -1,4 +1,4 @@
-package signup.constants;
+package service.constants;
 
 public enum UserQueryKey {
     ID("userId"), PASSWORD("password"), NAME("name"), EMAIL("email");

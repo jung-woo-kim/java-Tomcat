@@ -1,4 +1,4 @@
-package signup.dto;
+package controller.dto;
 
 import model.User;
 

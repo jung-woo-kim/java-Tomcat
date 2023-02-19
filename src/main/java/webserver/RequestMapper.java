@@ -1,94 +1,39 @@
 package webserver;
 
-import list.ListController;
-import login.controller.LogInController;
-import signup.controller.SignUpController;
-import util.HttpHeader;
-import util.request.HttpMethod;
+import controller.*;
 import util.request.HttpRequest;
 import util.response.HttpResponse;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestMapper {
-    private final HttpRequest request;
-    private SignUpController signUpController;
-    private LogInController logInController;
-    private ListController listController;
-    private HttpResponse httpResponse;
+    private final HttpRequest httpRequest;
+    private final HttpResponse httpResponse;
 
-    public RequestMapper(HttpRequest request, HttpResponse httpResponse) {
-        this.request = request;
+    private final Map<String, Controller> controllers = new HashMap<>();
+    private final Controller controller;
+
+    public RequestMapper(HttpRequest httpRequest, HttpResponse httpResponse) {
+        initControllers();
+        this.httpRequest = httpRequest;
         this.httpResponse = httpResponse;
+        controller = controllers.get(httpRequest.getUrl());
     }
 
-    public void proceed() {
-        if (request.getStartLine().getHttpMethod().equals(HttpMethod.GET)) {
-            doGET();
-        }
-        if (request.getStartLine().getHttpMethod().equals(HttpMethod.POST)) {
-            doPost();
-        }
+    private void initControllers() {
+        controllers.put(RequestURL.SIGNUP.getUrl(),new SignUpController());
+        controllers.put(RequestURL.LOGIN_POST.getUrl(), new LogInController());
+        controllers.put(RequestURL.USER_LIST.getUrl(), new ListController());
     }
 
-    private void doGET() {
-        if (request.getUrl().equals("/") || request.getUrl().equals(RequestURL.INDEX.getUrl())) {
-            try {
-                byte[] body = Files.readAllBytes(Paths.get(RequestURL.ROOT.getUrl() + "/index.html"));
-                httpResponse.put(HttpHeader.CONTENT_TYPE, String.valueOf(body.length));
-//                httpResponse.setBody(body);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+    public void proceed() throws IOException {
+        if (controller != null) {
+            controller.service(httpRequest, httpResponse);
             return;
         }
-        if (request.getUrl().startsWith(RequestURL.SIGNUP.getUrl())) {
-            signUpController = new SignUpController();
-            signUpController.signUp(request, httpResponse);
-            return;
-        }
-        if (request.getUrl().equals(RequestURL.USER_LIST.getUrl())) {
-            listController = new ListController();
-            listController.list(request, httpResponse);
-        }
-
-        if (request.getUrl().contains("css")) {
-            httpResponse.put(HttpHeader.CONTENT_TYPE,"text/css");
-            try {
-                byte[] body = Files.readAllBytes(Paths.get(RequestURL.ROOT.getUrl() + request.getUrl()));
-                httpResponse.put(HttpHeader.CONTENT_LENGTH, String.valueOf(body.length));
-//                httpResponse.setBody(body);
-            } catch (IOException e) {
-                // 파일이 존재하지 않을때
-                throw new RuntimeException(e);
-            }
-        }
-
-        if (request.getUrl().contains("html")) {
-            try {
-                byte[] body = Files.readAllBytes(Paths.get(RequestURL.ROOT.getUrl() + request.getUrl()));
-                httpResponse.put(HttpHeader.CONTENT_LENGTH, String.valueOf(body.length));
-//                httpResponse.setBody(body);
-            } catch (IOException e) {
-                // 파일이 존재하지 않을때
-                throw new RuntimeException(e);
-            }
-        }
-
+        httpResponse.forward(httpRequest.getUrl());
     }
 
-    private void doPost() {
-        if (request.getUrl().startsWith(RequestURL.SIGNUP.getUrl())) {
-            signUpController = new SignUpController();
-            signUpController.signUp(request, httpResponse);
-
-        }
-
-        if (request.getUrl().startsWith(RequestURL.LOGIN_POST.getUrl())) {
-            logInController = new LogInController();
-            logInController.login(request, httpResponse);
-        }
-    }
 }

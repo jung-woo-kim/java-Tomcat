@@ -1,9 +1,9 @@
 package service;
 
 import db.MemoryUserRepository;
-import login.dto.LogInDTO;
+import controller.dto.LogInDTO;
 import model.User;
-import signup.dto.SignUpDTO;
+import controller.dto.SignUpDTO;
 
 public class UserService {
     private final MemoryUserRepository memoryUserRepository = MemoryUserRepository.getInstance();

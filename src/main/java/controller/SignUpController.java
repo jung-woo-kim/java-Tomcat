@@ -1,7 +1,7 @@
-package signup.controller;
+package controller;
 
-import signup.constants.UserQueryKey;
-import signup.dto.SignUpDTO;
+import service.constants.UserQueryKey;
+import controller.dto.SignUpDTO;
 import service.UserService;
 import util.HttpHeader;
 import util.request.HttpRequest;
@@ -9,20 +9,26 @@ import util.response.HttpResponse;
 import util.response.HttpStatus;
 import webserver.RequestURL;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static util.request.HttpRequestUtils.parseQuery;
 
-public class SignUpController {
+public class SignUpController extends AbstractController{
     UserService userService = UserService.getInstance();
-    public void signUp(HttpRequest httpRequest, HttpResponse httpResponse) {
+
+    @Override
+    void doGet(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
+        SignUpDTO signUpDTO = queryToDTO(httpRequest.getStartLine().getQuery());
+        userService.signUP(signUpDTO);
+        httpResponse.redirect(RequestURL.INDEX.getUrl());
+    }
+
+    @Override
+    void doPost(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
         SignUpDTO signUpDTO = queryToDTO(parseQuery(httpRequest.getBody()));
         userService.signUP(signUpDTO);
-
-        httpResponse.setHttpStatus(HttpStatus.REDIRECT);
-        httpResponse.setStatusCode("302");
-        httpResponse.put(HttpHeader.LOCATION, RequestURL.INDEX.getUrl());
-
+        httpResponse.redirect(RequestURL.INDEX.getUrl());
     }
 
     private SignUpDTO queryToDTO(Map<String ,String> query) {

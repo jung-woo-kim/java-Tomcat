@@ -1,4 +1,4 @@
-package login.dto;
+package controller.dto;
 
 public class LogInDTO {
     private String userId;

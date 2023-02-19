@@ -1,37 +1,38 @@
-package login.controller;
+package controller;
 
-import login.dto.LogInDTO;
+import controller.dto.LogInDTO;
 import service.UserService;
-import signup.constants.UserQueryKey;
+import service.constants.UserQueryKey;
 import util.HttpHeader;
 import util.request.HttpRequest;
 import util.response.HttpResponse;
 import util.response.HttpStatus;
 import webserver.RequestURL;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static util.request.HttpRequestUtils.parseQuery;
 
-public class LogInController {
+public class LogInController implements Controller {
     UserService userService = UserService.getInstance();
 
-    public void login(HttpRequest httpRequest, HttpResponse httpResponse) {
+    @Override
+    public void service(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
         LogInDTO logInDTO = queryToDTO(parseQuery(httpRequest.getBody()));
-        if(userService.isUser(logInDTO)) {
+        if (userService.isUser(logInDTO)) {
             httpResponse.put(HttpHeader.SET_COOKIE, "logined=true");
-            httpResponse.setHttpStatus(HttpStatus.REDIRECT);
-            httpResponse.setStatusCode("302");
-            httpResponse.put(HttpHeader.LOCATION, RequestURL.INDEX.getUrl());
+            httpResponse.redirect(RequestURL.INDEX.getUrl());
             return;
         }
         httpResponse.put(HttpHeader.SET_COOKIE, "logined=false");
-        httpResponse.setHttpStatus(HttpStatus.REDIRECT);
-        httpResponse.setStatusCode("302");
-        httpResponse.put(HttpHeader.LOCATION, RequestURL.LOGIN_FAILED.getUrl());
+        httpResponse.redirect(RequestURL.LOGIN_FAILED.getUrl());
     }
 
-    private LogInDTO queryToDTO(Map<String ,String> query) {
+
+    private LogInDTO queryToDTO(Map<String, String> query) {
         return new LogInDTO(query.get(UserQueryKey.ID.getKey()), query.get(UserQueryKey.PASSWORD.getKey()));
     }
+
+
 }

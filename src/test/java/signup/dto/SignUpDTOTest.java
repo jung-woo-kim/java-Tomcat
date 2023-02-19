@@ -1,5 +1,6 @@
 package signup.dto;
 
+import controller.dto.SignUpDTO;
 import model.User;
 import org.junit.jupiter.api.Test;
 
