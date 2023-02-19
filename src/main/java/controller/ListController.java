@@ -16,7 +16,7 @@ public class ListController implements Controller {
     public void service(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
         String cookie = httpRequest.getHeaders().get(HttpHeader.COOKIE);
 
-        if (cookie != null && cookie.equals("logined=true")) {
+        if (httpRequest.isLogined()) {
             httpResponse.redirect(RequestURL.USER_LIST_HTML.getUrl());
             return;
         }

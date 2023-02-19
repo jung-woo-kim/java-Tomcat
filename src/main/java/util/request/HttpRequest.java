@@ -1,5 +1,6 @@
 package util.request;
 
+import util.HttpHeader;
 import webserver.RequestURL;
 
 import java.io.BufferedReader;
@@ -46,6 +47,11 @@ public class HttpRequest {
 
     private static int convertIntFromContentLength(final String contentLength) {
         return Integer.parseInt(contentLength);
+    }
+
+    public boolean isLogined() {
+        String cookie = headers.get(HttpHeader.COOKIE);
+        return cookie != null && cookie.equals("logined=true");
     }
 
     public HttpRequestStartLine getStartLine() {
