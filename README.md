@@ -1,7 +1,6 @@
 # HTTP-web-server
 
-
-## Task 1 : 가장 row하게 socket 통신으로만 웹 서버를 구현한다.
+## Task : TCP socket 통신으로 Tomcat을 구현한다.
 
 ### DB
 우선 인메모리 형식으로 구현한다.
@@ -21,16 +20,16 @@ User
 Webserver
 - main 메서드가 존재하는 클래스
 - 사용자로부터의 요청이 있을 때 마다 새로운 스레드를 만들어낸다.
+- 스레드 풀을 이용하여 많은 요청에 대비한다.
 
 RequestHandler
 - 실질적으로 작업을 수행할 스레드 클래스
-- OutputStream을 DataDouputStream으로 감싸 사용한다.
-- Header 작성 메서드
-- Body 작성 메서드
+- run 메서드에서 작업을 수행한다.
 
 RequestMapper
 - 요청을 그 요청을 수행할 도메인과 연결해주는 역할을 한다.
 - 즉, 요청을 해석하여 메소드를 부른다.
+- 다형성을 이용해 요청에 알맞은 controller로 요청 처리를 전달한다.
 
 ### Util
 
@@ -41,5 +40,5 @@ HttpRequest
 HttpResponse
 - Http 응답을 작성할 수 있다.
 
-### signup
-- 회원가입 로직을 담당
+### Controller
+요청 url에 알맞는 작업을 처리한다.
